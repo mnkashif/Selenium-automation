@@ -77,10 +77,10 @@ pss1=getpass.getpass("enter gmail password")
 pss=driver.find_element_by_xpath('//*[@id="password"]/div[1]/div/div[1]/input')
 pss.send_keys(pss1)
 pss.send_keys(Keys.ENTER)
-'''def addch():
+def addch():
     ben="Yes"
     while ben=="Yes":
-        ben=raw_input("Do you want to subscribe to any new channel?  ")
+        ben=raw_input("Do you want to subscribe or unsubscribe(enter already subscribed channel) to  a channel?  ")
         if ben=="Yes":
             e=raw_input("Which Channel? ")
             driver.get('https://www.youtube.com/results?search_query='+e)
@@ -92,7 +92,7 @@ pss.send_keys(Keys.ENTER)
     
         
 
-addch()'''
+addch()
 driver.implicitly_wait(10)
 sbs=WebDriverWait(driver,10).until(expected_conditions.element_to_be_clickable((By.XPATH,'//*[@id="endpoint"and @title="Subscriptions"]')))
 sbs.click()
@@ -102,7 +102,7 @@ def videos(id):
     driver.get(id)
     driver.find_element_by_css_selector('ytd-button-renderer.style-scope:nth-child(4) > a:nth-child(1) > yt-icon-button:nth-child(1) > button:nth-child(1)').click()
 
-lst=driver.find_element_by_css_selector('ytd-browse.style-scope:nth-child(2) > ytd-two-column-browse-results-renderer:nth-child(7) > ytd-section-list-renderer:nth-child(1) > div:nth-child(2) > ytd-item-section-renderer:nth-child(1) > div:nth-child(3) > ytd-shelf-renderer:nth-child(1) > div:nth-child(1) > div:nth-child(2) > ytd-grid-renderer:nth-child(1)')
+lst=driver.find_element_by_css_selector('ytd-section-list-renderer.ytd-two-column-browse-results-renderer > div:nth-child(2) > ytd-item-section-renderer:nth-child(1) > div:nth-child(3) > ytd-shelf-renderer:nth-child(1) > div:nth-child(1) > div:nth-child(2)')
 lst1=lst.find_elements_by_tag_name('ytd-grid-video-renderer')
 
 lst2=[]
@@ -114,12 +114,15 @@ print len(lst2)
 for video in range(len(lst2)):
     if video==0:
         videos(lst2[video])
-        driver.find_element_by_css_selector('paper-item.ytd-compact-link-renderer').click()
+        driver.find_element_by_css_selector('#endpoint').click()
         play=driver.find_element_by_css_selector('#input-1')
         z=raw_input("enter playlist name")
         play.send_keys(z)
+        time.sleep(1)
         driver.find_element_by_css_selector('iron-icon.style-scope').click()
+        time.sleep(1)
         driver.find_element_by_css_selector('ytd-privacy-dropdown-item-renderer.style-scope:nth-child(3) > paper-item:nth-child(1) > paper-item-body:nth-child(1)').click()
+        time.sleep(1)
         driver.find_element_by_css_selector('ytd-button-renderer.ytd-add-to-playlist-create-renderer > a:nth-child(1) > paper-button:nth-child(1)').click()
     else:
         time.sleep(2)
