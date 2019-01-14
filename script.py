@@ -9,6 +9,7 @@ import getpass
 driver=webdriver.Firefox()
 driver.set_page_load_timeout("10")
 driver.get("http://www.youtube.com")
+time.sleep(2)
 driver.maximize_window()
 
 body=driver.find_element_by_xpath('/html/body')
@@ -16,7 +17,10 @@ body.send_keys(Keys.CONTROL + 't')
 time.sleep(3)
 sgn = driver.find_element_by_link_text("SIGN IN")
 sgn.click()
+
 #tree=raw_input("Do yo have an existing account Yes or No ")
+#This part is the gmail signup part
+#It is going to the end but not creating account as it is an automated window
 '''if tree=="No":
     driver.find_element_by_css_selector('.oG5Srb').click()
     kgf=driver.find_element_by_css_selector('#firstName')
@@ -72,11 +76,14 @@ sgn.click()
 sgn1=raw_input('enter email ')
 sgn2=driver.find_element_by_xpath('//*[@id="identifierId"]')
 sgn2.send_keys(sgn1)
+time.sleep(2)
 sgn2.send_keys(Keys.ENTER)
 pss1=getpass.getpass("enter gmail password")
 pss=driver.find_element_by_xpath('//*[@id="password"]/div[1]/div/div[1]/input')
 pss.send_keys(pss1)
+time.sleep(2)
 pss.send_keys(Keys.ENTER)
+
 def addch():
     ben="Yes"
     while ben=="Yes":
@@ -84,6 +91,7 @@ def addch():
         if ben=="Yes":
             e=raw_input("Which Channel? ")
             driver.get('https://www.youtube.com/results?search_query='+e)
+            time.sleep(2)
     #tre=driver.find_element_by_css_selector('#search').send_keys(e)
             try: 
                 driver.find_element_by_xpath('/html/body/ytd-app/div[1]/ytd-page-manager/ytd-search/div[1]/ytd-two-column-search-results-renderer/div/ytd-section-list-renderer/div[2]/ytd-item-section-renderer/div[2]/ytd-channel-renderer/div/ytd-subscribe-button-renderer').click()
@@ -94,26 +102,30 @@ def addch():
 
 addch()
 driver.implicitly_wait(10)
+time.sleep(3)
 sbs=WebDriverWait(driver,10).until(expected_conditions.element_to_be_clickable((By.XPATH,'//*[@id="endpoint"and @title="Subscriptions"]')))
 sbs.click()
 time.sleep(2)
 
 def videos(id):
     driver.get(id)
+    time.sleep(2)
     driver.find_element_by_css_selector('ytd-button-renderer.style-scope:nth-child(4) > a:nth-child(1) > yt-icon-button:nth-child(1) > button:nth-child(1)').click()
 
-lst=driver.find_element_by_css_selector('ytd-section-list-renderer.ytd-two-column-browse-results-renderer > div:nth-child(2) > ytd-item-section-renderer:nth-child(1) > div:nth-child(3) > ytd-shelf-renderer:nth-child(1) > div:nth-child(1) > div:nth-child(2)')
+lst=driver.find_element_by_css_selector('ytd-item-section-renderer.style-scope:nth-child(1) > div:nth-child(3) > ytd-shelf-renderer:nth-child(1) > div:nth-child(1) > div:nth-child(2) > ytd-grid-renderer:nth-child(1)')
 lst1=lst.find_elements_by_tag_name('ytd-grid-video-renderer')
 
 lst2=[]
+
 for i in range(len(lst1)):
     lst2.insert(i,'')
     lst2[i]=lst1[i].find_element_by_tag_name('h3').find_element_by_tag_name('a').get_attribute('href')
-print len(lst2)
+#print len(lst2)
 
 for video in range(len(lst2)):
     if video==0:
         videos(lst2[video])
+        time.sleep(1)
         driver.find_element_by_css_selector('#endpoint').click()
         play=driver.find_element_by_css_selector('#input-1')
         z=raw_input("enter playlist name")
@@ -124,7 +136,8 @@ for video in range(len(lst2)):
         driver.find_element_by_css_selector('ytd-privacy-dropdown-item-renderer.style-scope:nth-child(3) > paper-item:nth-child(1) > paper-item-body:nth-child(1)').click()
         time.sleep(1)
         driver.find_element_by_css_selector('ytd-button-renderer.ytd-add-to-playlist-create-renderer > a:nth-child(1) > paper-button:nth-child(1)').click()
-    else:
+    
+    elif video<5:
         time.sleep(2)
         videos(lst2[video])
         WebDriverWait(driver,10).until(expected_conditions.element_to_be_clickable((By.CSS_SELECTOR,'ytd-playlist-add-to-option-renderer.style-scope:nth-child(2) > paper-checkbox:nth-child(1) > div:nth-child(1)'))).click()
@@ -132,9 +145,13 @@ for video in range(len(lst2)):
 
 
 
+time.sleep(2)
 driver.find_element_by_css_selector('yt-icon-button.ytd-masthead:nth-child(3) > button:nth-child(1)').click()
+time.sleep(2)
 driver.find_element_by_css_selector('#header-entry > a:nth-child(1)').click()
+time.sleep(2)
 driver.find_element_by_css_selector('#playlist-thumbnails').click()
+
 
      
 
